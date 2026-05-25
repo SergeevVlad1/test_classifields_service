@@ -1,10 +1,11 @@
 import "./App.css";
+import { PropertyForm } from "../features/property-form/property-form";
 
 function App() {
   return (
-    <>
-      <h2>Classifieds Service</h2>
-    </>
+    <main className="app-container">
+      <PropertyForm />
+    </main>
   );
 }
 
