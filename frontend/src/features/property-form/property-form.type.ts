@@ -9,3 +9,30 @@ export interface PropertyFormValues {
   propertyType: string;
   agree: boolean;
 }
+
+export interface FieldConfig {
+  name: keyof PropertyFormValues;
+  label: string;
+  type?: "text" | "number" | "email" | "password" | "tel";
+  placeholder?: string;
+}
+export type FormRowConfig =
+  | {
+      type: "single";
+      field: FieldConfig;
+    }
+  | {
+      type: "row";
+      fields: FieldConfig[];
+    }
+  | {
+      type: "radio-group";
+      name: keyof PropertyFormValues;
+      label: string;
+      options: { value: string; label: string }[];
+    }
+  | {
+      type: "checkbox";
+      name: keyof PropertyFormValues;
+      label: string;
+    };
