@@ -8,14 +8,45 @@ import {
   FormikInput,
   FormikRadio,
 } from "../../shared/lib/formik/input-components";
+import { usePropertyMutation } from "./api/use-property-mutation";
+import styles from "./property-form.module.scss";
+import axios from "axios";
 
 export const PropertyForm = () => {
+  const { mutate, isPending, isError, isSuccess, error } = usePropertyMutation();
+
   const handleSubmit = (
     values: PropertyFormValues,
     { resetForm }: FormikHelpers<PropertyFormValues>,
   ) => {
-    console.log(values);
-    resetForm();
+    mutate(values, {
+      onSuccess: () => {
+        resetForm();
+      },
+    });
+  };
+
+  const getErrorMessage = () => {
+    if (!error) return "";
+    
+    // Check if it is an Axios error with response data (like DRF's 400 Bad Request)
+    if (axios.isAxiosError(error) && error.response?.data) {
+      const data = error.response.data;
+      if (typeof data === "object" && data !== null) {
+        return Object.entries(data)
+          .map(([key, value]) => {
+            const message = Array.isArray(value) ? value.join(", ") : String(value);
+            // Translate common backend keys to Russian for better UX
+            const fieldLabel = key === "url" ? "Ссылка" : key;
+            return `${fieldLabel}: ${message}`;
+          })
+          .join(" | ");
+      }
+      if (typeof data === "string") return data;
+    }
+    
+    // Fallback to connection errors
+    return "Не удалось отправить объявление. Проверьте подключение к серверу.";
   };
 
   return (
@@ -25,9 +56,9 @@ export const PropertyForm = () => {
       onSubmit={handleSubmit}
     >
       {({ handleSubmit, isValid, dirty }) => (
-        <Form onSubmit={handleSubmit} className="property-real-form">
-          <div>
-            {PROPERTY_FORM_FIELDS.map((row, index) => {
+        <Form onSubmit={handleSubmit} className={styles.propertyRealForm}>
+          <div className={styles.formFieldsWrapper}>
+            {PROPERTY_FORM_FIELDS.map((row, rowIndex) => {
               switch (row.type) {
                 case "single":
                   return (
@@ -41,7 +72,7 @@ export const PropertyForm = () => {
                   );
                 case "row":
                   return (
-                    <div>
+                    <div key={`row-${rowIndex}`} className={styles.formFieldsRow}>
                       {row.fields.map((f) => (
                         <FormikInput
                           key={f.name}
@@ -84,6 +115,26 @@ export const PropertyForm = () => {
               }
             })}
           </div>
+
+          {isSuccess && (
+            <div className={styles.formSuccessBanner}>
+              🎉 Объявление отправлено! Задание по сканированию Авито добавлено в очередь.
+            </div>
+          )}
+
+          {isError && (
+            <div className={styles.formErrorBanner}>
+              ❌ {getErrorMessage()}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            disabled={!isValid || !dirty || isPending}
+          >
+            {isPending ? "Отправка..." : "Опубликовать объявление"}
+          </button>
         </Form>
       )}
     </Formik>

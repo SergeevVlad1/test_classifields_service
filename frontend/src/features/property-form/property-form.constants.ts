@@ -9,6 +9,7 @@ export const initialValues: PropertyFormValues = {
   livingSquare: "",
   kitchenSquare: "",
   propertyType: "apartment",
+  url: "",
   agree: false,
 };
 
@@ -33,7 +34,6 @@ export const PROPERTY_FORM_FIELDS: FormRowConfig[] = [
   },
   {
     type: "row",
-    // gridClass: "form-row-2",
     fields: [
       {
         name: "totalFloors",
@@ -81,6 +81,15 @@ export const PROPERTY_FORM_FIELDS: FormRowConfig[] = [
       { value: "house", label: "Дом / Коттедж" },
       { value: "commercial", label: "Коммерческая" },
     ],
+  },
+  {
+    type: "single",
+    field: {
+      name: "url",
+      label: "Ссылка на объявление Авито",
+      type: "text",
+      placeholder: "https://www.avito.ru/...",
+    },
   },
   {
     type: "checkbox",

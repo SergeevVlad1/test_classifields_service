@@ -1,11 +1,16 @@
-import "./styles/App.css";
-import { PropertyForm } from "../features/property-form/property-form";
+import "./styles/App.scss";
+import { PropertyFormPage } from "../pages/property-form-page";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
+  const queryClient = new QueryClient();
+  
   return (
-    <main className="app-container">
-      <PropertyForm />
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <main className="app-container">
+        <PropertyFormPage />
+      </main>
+    </QueryClientProvider>
   );
 }
 

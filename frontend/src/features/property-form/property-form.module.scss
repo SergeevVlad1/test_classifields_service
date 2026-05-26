@@ -1,0 +1,304 @@
+.propertyRealForm {
+  width: 100%;
+
+  :global {
+    .form-field-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 4px;
+      transition: all 0.3s ease;
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-h);
+        margin-bottom: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 15px;
+        color: var(--text-h);
+        background-color: var(--social-bg);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        box-sizing: border-box;
+        outline: none;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:focus {
+          border-color: var(--accent);
+          background-color: var(--bg);
+          box-shadow: 0 0 0 4px var(--accent-bg);
+        }
+      }
+
+      &.has-error {
+        input {
+          border-color: #ef4444;
+          &:focus {
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+          }
+        }
+      }
+    }
+
+    .error-message-bubble {
+      color: #ef4444;
+      font-size: 12px;
+      font-weight: 500;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      animation: slideIn 0.2s ease-out forwards;
+
+      &::before {
+        content: "⚠";
+        font-size: 14px;
+      }
+    }
+
+    .real-checkbox {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    label:has(.real-checkbox) {
+      flex-direction: row;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      padding-left: 32px;
+      font-size: 14px;
+      font-weight: 500;
+      margin: 10px 0;
+    }
+
+    .custom-checkbox {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      height: 20px;
+      width: 20px;
+      background-color: var(--social-bg);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.2s ease;
+
+      &::after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2.5px 2.5px 0;
+        transform: rotate(45deg);
+      }
+    }
+
+    label:hover .custom-checkbox {
+      border-color: var(--accent-border);
+    }
+
+    .real-checkbox:checked ~ .custom-checkbox {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      &::after {
+        display: block;
+      }
+    }
+
+    .radio-group-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 8px 0;
+
+      .group-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-h);
+      }
+    }
+
+    .radio-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+
+      label {
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-left: 28px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+        cursor: pointer;
+        user-select: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: var(--text-h);
+          .custom-radio {
+            border-color: var(--accent-border);
+          }
+        }
+      }
+    }
+
+    .real-radio {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .custom-radio {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      height: 18px;
+      width: 18px;
+      background-color: var(--social-bg);
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      transition: all 0.2s ease;
+
+      &::after {
+        content: "";
+        position: absolute;
+        display: none;
+        top: 5px;
+        left: 5px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: white;
+      }
+    }
+
+    .real-radio:checked ~ .custom-radio {
+      border-color: var(--accent);
+      background-color: var(--accent);
+      &::after {
+        display: block;
+      }
+    }
+  }
+}
+
+.formFieldsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formFieldsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+}
+
+.formSuccessBanner {
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #15803d;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 10px;
+  line-height: 140%;
+  animation: fadeIn 0.3s ease;
+}
+
+.formErrorBanner {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #b91c1c;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 10px;
+  line-height: 140%;
+  animation: fadeIn 0.3s ease;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 14px 24px;
+  margin-top: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--accent) 0%, #8b2cf5 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(170, 59, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(170, 59, 255, 0.4);
+    background: linear-gradient(135deg, #b95dff 0%, #9e43ff 100%);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: var(--border);
+    color: var(--text);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .formFieldsRow {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

@@ -7,6 +7,7 @@ export interface PropertyFormValues {
   livingSquare: number | "";
   kitchenSquare: number | "";
   propertyType: string;
+  url: string;
   agree: boolean;
 }
 
@@ -15,6 +16,7 @@ export interface FieldConfig {
   label: string;
   type?: "text" | "number" | "email" | "password" | "tel";
   placeholder?: string;
+  url?: string;
 }
 export type FormRowConfig =
   | {

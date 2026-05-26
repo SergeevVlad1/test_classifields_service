@@ -15,7 +15,7 @@ Yup.setLocale({
 });
 
 Yup.addMethod(Yup.number, "moreThanSumOfFields", function (fields: string[], message?: string) {
-  return this.test("moreThanSumOfFields", message, function (value) {
+  return this.test("moreThanSumOfFields", message || "Значение должно быть больше суммы полей", function (value) {
     const { parent } = this;
     if (value === undefined || value === null) return true;
     

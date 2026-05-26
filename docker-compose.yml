@@ -3,7 +3,6 @@ version: '3.8'
 services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    # No ports exposed to the host machine, only available in the docker bridge network
     expose:
       - "5672"
       - "15672"
@@ -16,7 +15,6 @@ services:
 
   selenium-hub:
     image: selenium/hub:4.18.1
-    # No ports exposed to the host machine
     expose:
       - "4444"
     healthcheck:
@@ -37,6 +35,11 @@ services:
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
       - SE_NODE_MAX_SESSIONS=2
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5555/status || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: always
 
   web:
@@ -44,7 +47,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"  # ONLY the public Django web service has its port open to the host
+      - "8000:8000"
     environment:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
@@ -72,5 +75,5 @@ services:
       selenium-hub:
         condition: service_healthy
       chrome:
-        condition: service_started
+        condition: service_healthy
     restart: always
